@@ -64,10 +64,22 @@ export async function createBrowserDb() {
     id TEXT PRIMARY KEY, amount REAL NOT NULL,
     type TEXT NOT NULL CHECK(type IN ('income','expense')),
     categoryId TEXT NOT NULL, subcategoryId TEXT,
-    date TEXT NOT NULL, note TEXT DEFAULT '',
+    date TEXT NOT NULL, note TEXT DEFAULT '', images TEXT DEFAULT '[]',
     createdAt TEXT DEFAULT (datetime('now','localtime')),
     updatedAt TEXT DEFAULT (datetime('now','localtime'))
   )`);
+  // Migration: add images column if missing, migrate old image data
+  try { db.run('ALTER TABLE records ADD COLUMN images TEXT DEFAULT \'[]\''); } catch(e) {}
+  try {
+    const oldCols = db.exec("PRAGMA table_info(records)");
+    const cols = oldCols.length ? oldCols[0].values.map(r => r[1]) : [];
+    if (cols.includes('image') && !cols.includes('images')) {
+      db.run('ALTER TABLE records ADD COLUMN images TEXT DEFAULT \'[]\'');
+    }
+    if (cols.includes('image')) {
+      db.run("UPDATE records SET images = ('[' || image || ']') WHERE images='[]' AND image IS NOT NULL AND image!=''");
+    }
+  } catch(e) {}
 
   db.run(`CREATE TABLE IF NOT EXISTS budgets (
     id TEXT PRIMARY KEY, categoryId TEXT,
@@ -102,37 +114,37 @@ export async function createBrowserDb() {
 function seedCategories() {
   const parents = [
     // Expense
-    ['cat_eat',       '餐饮',   'expense', '🍽️', '', null, 0],
-    ['cat_transport', '交通',   'expense', '🚗', '', null, 1],
-    ['cat_shopping',  '购物',   'expense', '🛒', '', null, 2],
-    ['cat_housing',   '住房',   'expense', '🏠', '', null, 3],
-    ['cat_utilities', '水电',   'expense', '💡', '', null, 4],
-    ['cat_phone',     '通讯',   'expense', '📱', '', null, 5],
-    ['cat_entertain', '娱乐',   'expense', '🎮', '', null, 6],
-    ['cat_medical',   '医疗',   'expense', '💊', '', null, 7],
-    ['cat_education', '教育',   'expense', '📚', '', null, 8],
-    ['cat_clothing',  '服饰',   'expense', '👗', '', null, 9],
-    ['cat_daily',     '日用',   'expense', '🧴', '', null, 10],
-    ['cat_social',    '社交',   'expense', '🎉', '', null, 11],
-    ['cat_other_exp', '其他支出','expense', '📌', '', null, 12],
+    ['cat_eat',       '餐饮',   'expense', 'cat-eat', '', null, 0],
+    ['cat_transport', '交通',   'expense', 'cat-transport', '', null, 1],
+    ['cat_shopping',  '购物',   'expense', 'cat-shopping', '', null, 2],
+    ['cat_housing',   '住房',   'expense', 'cat-housing', '', null, 3],
+    ['cat_utilities', '水电',   'expense', 'cat-utilities', '', null, 4],
+    ['cat_phone',     '通讯',   'expense', 'cat-phone', '', null, 5],
+    ['cat_entertain', '娱乐',   'expense', 'cat-entertain', '', null, 6],
+    ['cat_medical',   '医疗',   'expense', 'cat-medical', '', null, 7],
+    ['cat_education', '教育',   'expense', 'cat-education', '', null, 8],
+    ['cat_clothing',  '服饰',   'expense', 'cat-clothing', '', null, 9],
+    ['cat_daily',     '日用',   'expense', 'cat-daily', '', null, 10],
+    ['cat_social',    '社交',   'expense', 'cat-social', '', null, 11],
+    ['cat_other_exp', '其他支出','expense', 'cat-other-exp', '', null, 12],
     // Income
-    ['cat_salary',    '工资',   'income', '💼', '', null, 20],
-    ['cat_bonus',     '奖金',   'income', '🎁', '', null, 21],
-    ['cat_parttime',  '兼职',   'income', '💰', '', null, 22],
-    ['cat_invest',    '投资收益','income', '📈', '', null, 23],
-    ['cat_redpacket', '红包',   'income', '🧧', '', null, 24],
-    ['cat_refund',    '退款',   'income', '↩️', '', null, 25],
-    ['cat_other_inc', '其他收入','income', '💵', '', null, 26],
+    ['cat_salary',    '工资',   'income', 'cat-salary', '', null, 20],
+    ['cat_bonus',     '奖金',   'income', 'cat-bonus', '', null, 21],
+    ['cat_parttime',  '兼职',   'income', 'cat-parttime', '', null, 22],
+    ['cat_invest',    '投资收益','income', 'cat-invest', '', null, 23],
+    ['cat_redpacket', '红包',   'income', 'cat-redpacket', '', null, 24],
+    ['cat_refund',    '退款',   'income', 'cat-refund', '', null, 25],
+    ['cat_other_inc', '其他收入','income', 'cat-other-inc', '', null, 26],
   ];
   const children = [
-    ['cat_eat_meal',    '正餐',   'expense', '🍚', '', 'cat_eat', 0],
-    ['cat_eat_snack',   '零食',   'expense', '🍿', '', 'cat_eat', 1],
-    ['cat_trans_bus',   '公交',   'expense', '🚌', '', 'cat_transport', 0],
-    ['cat_trans_taxi',  '打车',   'expense', '🚕', '', 'cat_transport', 1],
-    ['cat_trans_gas',   '加油',   'expense', '⛽', '', 'cat_transport', 2],
-    ['cat_shop_clothes','服饰',   'expense', '👗', '', 'cat_shopping', 0],
-    ['cat_shop_cos',    '美妆',   'expense', '💄', '', 'cat_shopping', 1],
-    ['cat_shop_digi',   '数码',   'expense', '📱', '', 'cat_shopping', 2],
+    ['cat_eat_meal',    '正餐',   'expense', 'sub-meal', '', 'cat_eat', 0],
+    ['cat_eat_snack',   '零食',   'expense', 'sub-snack', '', 'cat_eat', 1],
+    ['cat_trans_bus',   '公交',   'expense', 'sub-bus', '', 'cat_transport', 0],
+    ['cat_trans_taxi',  '打车',   'expense', 'sub-taxi', '', 'cat_transport', 1],
+    ['cat_trans_gas',   '加油',   'expense', 'sub-gas', '', 'cat_transport', 2],
+    ['cat_shop_clothes','服饰',   'expense', 'sub-clothes', '', 'cat_shopping', 0],
+    ['cat_shop_cos',    '美妆',   'expense', 'sub-cosmetics', '', 'cat_shopping', 1],
+    ['cat_shop_digi',   '数码',   'expense', 'sub-digital', '', 'cat_shopping', 2],
   ];
   for (const cat of parents.concat(children)) {
     db.run('INSERT INTO categories (id, name, type, icon, color, parentId, sortOrder) VALUES (?,?,?,?,?,?,?)', cat);
@@ -181,12 +193,12 @@ export function getApi() {
         const id = uuidv4();
         const now = new Date().toISOString().replace('T', ' ').slice(0, 19);
         const full = { id, amount: data.amount, type: data.type, categoryId: data.categoryId,
-          subcategoryId: data.subcategoryId || null, date: data.date, note: data.note || '',
+          subcategoryId: data.subcategoryId || null, date: data.date, note: data.note || '', images: data.images || '[]',
           createdAt: now, updatedAt: now };
         db.run(
-          `INSERT INTO records (id, amount, type, categoryId, subcategoryId, date, note, createdAt, updatedAt)
-           VALUES (?,?,?,?,?,?,?,?,?)`,
-          [full.id, full.amount, full.type, full.categoryId, full.subcategoryId, full.date, full.note, full.createdAt, full.updatedAt]
+          `INSERT INTO records (id, amount, type, categoryId, subcategoryId, date, note, images, createdAt, updatedAt)
+           VALUES (?,?,?,?,?,?,?,?,?,?)`,
+          [full.id, full.amount, full.type, full.categoryId, full.subcategoryId, full.date, full.note, full.images, full.createdAt, full.updatedAt]
         );
         saveToStorage();
         pushUndo({ type: 'create', recordId: id, newData: full });
@@ -196,8 +208,8 @@ export function getApi() {
         const old = api.records.get(id);
         const now = new Date().toISOString().replace('T', ' ').slice(0, 19);
         db.run(
-          `UPDATE records SET amount=?, type=?, categoryId=?, subcategoryId=?, date=?, note=?, updatedAt=? WHERE id=?`,
-          [data.amount, data.type, data.categoryId, data.subcategoryId || null, data.date, data.note || '', now, id]
+          `UPDATE records SET amount=?, type=?, categoryId=?, subcategoryId=?, date=?, note=?, images=?, updatedAt=? WHERE id=?`,
+          [data.amount, data.type, data.categoryId, data.subcategoryId || null, data.date, data.note || '', data.images || '[]', now, id]
         );
         saveToStorage();
         pushUndo({ type: 'update', recordId: id, oldData: old, newData: api.records.get(id) });
@@ -343,7 +355,7 @@ export function getApi() {
           [d.amount, d.type, d.categoryId, d.subcategoryId, d.date, d.note, d.updatedAt, d.id]);
       } else if (action.type === 'delete') {
         const d = action.oldData;
-        db.run('INSERT INTO records (id,amount,type,categoryId,subcategoryId,date,note,createdAt,updatedAt) VALUES (?,?,?,?,?,?,?,?,?)',
+        db.run('INSERT INTO records (id,amount,type,categoryId,subcategoryId,date,note,createdAt,updatedAt) VALUES (?,?,?,?,?,?,?,?,?,?)',
           [d.id, d.amount, d.type, d.categoryId, d.subcategoryId, d.date, d.note, d.createdAt, d.updatedAt]);
       }
       saveToStorage();
@@ -356,7 +368,7 @@ export function getApi() {
 
       if (action.type === 'create') {
         const d = action.newData;
-        db.run('INSERT INTO records (id,amount,type,categoryId,subcategoryId,date,note,createdAt,updatedAt) VALUES (?,?,?,?,?,?,?,?,?)',
+        db.run('INSERT INTO records (id,amount,type,categoryId,subcategoryId,date,note,createdAt,updatedAt) VALUES (?,?,?,?,?,?,?,?,?,?)',
           [d.id, d.amount, d.type, d.categoryId, d.subcategoryId, d.date, d.note, d.createdAt, d.updatedAt]);
       } else if (action.type === 'update') {
         const d = action.newData;

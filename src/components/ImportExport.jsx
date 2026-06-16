@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDb } from '../api/db-context';
+import PixelIcon from './PixelIcon';
 import { exportCSV, exportExcel, exportBackup, parseCSV, parseExcel, detectFieldMapping, validateAndConvert, parseBackup, importRecords } from '../api/backup';
 
 export default function ImportExport({ records, categories, onDataChanged }) {
@@ -109,20 +110,20 @@ export default function ImportExport({ records, categories, onDataChanged }) {
       {/* 导出按钮组 */}
       <div className="dropdown" style={{ position: 'relative', display: 'inline-block' }}>
         <button className="btn btn-secondary" onClick={() => setShowMenu(!showMenu)}>
-          📦 导入/导出 ▾
+          <PixelIcon name="io-export" size={14} /> 导入/导出 ▾
         </button>
         {showMenu && (
           <div className="dropdown-menu">
-            <button onClick={handleExportCSV}>📄 导出 CSV</button>
-            <button onClick={handleExportExcel}>📊 导出 Excel</button>
-            <button onClick={handleExportBackup}>💾 备份数据 (JSON)</button>
+            <button onClick={handleExportCSV}><PixelIcon name="io-csv" size={14} /> 导出 CSV</button>
+            <button onClick={handleExportExcel}><PixelIcon name="io-excel" size={14} /> 导出 Excel</button>
+            <button onClick={handleExportBackup}><PixelIcon name="io-backup" size={14} /> 备份数据 (JSON)</button>
             <hr />
             <label className="dropdown-file-btn">
-              📤 导入 CSV / Excel
+              <PixelIcon name="io-import" size={14} /> 导入 CSV / Excel
               <input type="file" accept=".csv,.xlsx,.xls" onChange={handleFileSelect} hidden />
             </label>
             <label className="dropdown-file-btn">
-              🔄 恢复备份
+              <PixelIcon name="io-restore" size={14} /> 恢复备份
               <input type="file" accept=".json" onChange={handleRestoreSelect} hidden />
             </label>
           </div>

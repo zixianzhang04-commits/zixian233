@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ledger-v2';
+const CACHE_NAME = 'ledger-v3';
 const ASSETS = [
   '/',
   '/index.html',
@@ -30,6 +30,11 @@ self.addEventListener('activate', (event) => {
     })
   );
   self.clients.claim();
+});
+
+// Listen for skip-waiting message from page
+self.addEventListener('message', (event) => {
+  if (event.data === 'SKIP_WAITING') self.skipWaiting();
 });
 
 // Fetch: cache-first for assets, network-first for data

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PixelIcon from './PixelIcon';
 
 const emptyForm = {
   amount: '',
@@ -7,6 +8,7 @@ const emptyForm = {
   subcategoryId: '',
   date: new Date().toISOString().slice(0, 10),
   note: '',
+  images: '[]',
 };
 
 export default function RecordForm({ record, categories, onSave, onCancel }) {
@@ -22,6 +24,7 @@ export default function RecordForm({ record, categories, onSave, onCancel }) {
         subcategoryId: record.subcategoryId || '',
         date: record.date || new Date().toISOString().slice(0, 10),
         note: record.note || '',
+        images: record.images || '[]',
       });
     } else {
       setForm(emptyForm);
@@ -30,9 +33,6 @@ export default function RecordForm({ record, categories, onSave, onCancel }) {
   }, [record]);
 
   const parentCategories = categories.filter((c) => !c.parentId && c.type === form.type);
-  const subCategories = categories.filter(
-    (c) => c.parentId === form.categoryId
-  );
 
   function validate() {
     const err = {};
@@ -60,22 +60,18 @@ export default function RecordForm({ record, categories, onSave, onCancel }) {
   }
 
   function handleTypeChange(type) {
-    setForm({ ...form, type, categoryId: '', subcategoryId: '' });
+    setForm({ ...form, type, categoryId: '' });
   }
 
   function updateField(field, value) {
-    const updates = { ...form, [field]: value };
-    if (field === 'categoryId') {
-      updates.subcategoryId = '';
-    }
-    setForm(updates);
+    setForm({ ...form, [field]: value });
   }
 
   return (
     <div className="modal-overlay" onClick={onCancel}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h3>{record ? '编辑记录' : '新增记录'}</h3>
+          <h3>{record ? '编辑记录' : '添一笔'}</h3>
           <button className="modal-close" onClick={onCancel}>✕</button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -120,39 +116,18 @@ export default function RecordForm({ record, categories, onSave, onCancel }) {
             {/* 分类 */}
             <div className="form-group">
               <label className="form-label">分类</label>
-              <select
-                className={`form-input ${errors.categoryId ? 'is-error' : ''}`}
-                value={form.categoryId}
-                onChange={(e) => updateField('categoryId', e.target.value)}
-              >
-                <option value="">请选择分类</option>
-                {parentCategories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.icon} {cat.name}
-                  </option>
+              <div className="category-card-grid">
+                {parentCategories.map(cat => (
+                  <div key={cat.id}
+                    className={`category-card-item ${form.categoryId === cat.id ? 'selected' : ''}`}
+                    onClick={() => updateField('categoryId', cat.id)}>
+                    <PixelIcon name={cat.icon} size={48} variant="64" />
+                    <span>{cat.name}</span>
+                  </div>
                 ))}
-              </select>
+              </div>
               {errors.categoryId && <span className="form-error">{errors.categoryId}</span>}
             </div>
-
-            {/* 子分类 */}
-            {subCategories.length > 0 && (
-              <div className="form-group">
-                <label className="form-label">子分类（可选）</label>
-                <select
-                  className="form-input"
-                  value={form.subcategoryId}
-                  onChange={(e) => updateField('subcategoryId', e.target.value)}
-                >
-                  <option value="">不选</option>
-                  {subCategories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.icon} {cat.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
 
             {/* 日期 */}
             <div className="form-group">
@@ -176,6 +151,51 @@ export default function RecordForm({ record, categories, onSave, onCancel }) {
                 value={form.note}
                 onChange={(e) => updateField('note', e.target.value)}
               />
+            </div>
+
+            {/* 添加图片 */}
+            <div className="form-group">
+              <label className="form-label">图片（可选，可多张）</label>
+              <div className="image-list">
+                {(JSON.parse(form.images || '[]')).map((img, i) => (
+                  <div key={i} className="image-thumb">
+                    <img src={img} alt="" />
+                    <button type="button" className="image-remove" onClick={() => {
+                      const list = JSON.parse(form.images || '[]');
+                      list.splice(i, 1);
+                      updateField('images', JSON.stringify(list));
+                    }}>✕</button>
+                  </div>
+                ))}
+                <label className="image-upload-btn">
+                  ＋
+                  <input type="file" accept="image/*" hidden
+                    onChange={e => {
+                      const file = e.target.files[0];
+                      if (!file) return;
+                      if (file.size > 2*1024*1024) { alert('图片不能超过 2MB'); return; }
+                      const reader = new FileReader();
+                      reader.onload = ev => {
+                        const img = new Image();
+                        img.onload = () => {
+                          const maxW = 400;
+                          const scale = Math.min(1, maxW / img.width);
+                          const w = Math.round(img.width * scale);
+                          const h = Math.round(img.height * scale);
+                          const canvas = document.createElement('canvas');
+                          canvas.width = w; canvas.height = h;
+                          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                          const compressed = canvas.toDataURL('image/jpeg', 0.5);
+                          const list = JSON.parse(form.images || '[]');
+                          list.push(compressed);
+                          updateField('images', JSON.stringify(list));
+                        };
+                        img.src = ev.target.result;
+                      };
+                      reader.readAsDataURL(file);
+                    }} />
+                </label>
+              </div>
             </div>
           </div>
           <div className="modal-footer">

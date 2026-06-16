@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDb } from '../api/db-context';
+import PixelIcon from '../components/PixelIcon';
 
 export default function CategoriesPage() {
   const api = useDb();
@@ -109,19 +110,14 @@ export default function CategoriesPage() {
     } catch (err) { console.error('删除分类失败:', err); }
   }
 
-  function renderCategoryRow(cat, isChild) {
+  function renderCategoryRow(cat) {
     return (
-      <div key={cat.id} className={`category-row ${isChild ? 'category-child' : ''}`}>
-        <span className="category-card-icon">{cat.icon || '📌'}</span>
+      <div key={cat.id} className="category-row">
+        <span className="category-card-icon"><PixelIcon name={cat.icon || 'cat-other-exp'} size={22} /></span>
         <span className="category-card-name">{cat.name}</span>
         <div className="category-card-actions">
-          <button className="btn-icon btn-sort" title="上移" onClick={() => handleMoveUp(cat)}>▲</button>
-          <button className="btn-icon btn-sort" title="下移" onClick={() => handleMoveDown(cat)}>▼</button>
-          {!cat.parentId && (
-            <button className="btn-icon btn-sub" title="添加子分类" onClick={() => handleAddSub(cat)}>+</button>
-          )}
-          <button className="btn-icon btn-edit" title="编辑" onClick={() => handleEdit(cat)}>✏️</button>
-          <button className="btn-icon btn-delete" title="删除" onClick={() => handleDeleteClick(cat)}>🗑️</button>
+          <button className="btn-icon btn-edit" title="编辑" onClick={() => handleEdit(cat)}><PixelIcon name="action-edit" size={14} /></button>
+          <button className="btn-icon btn-delete" title="删除" onClick={() => handleDeleteClick(cat)}><PixelIcon name="action-delete" size={14} /></button>
         </div>
       </div>
     );
@@ -139,12 +135,7 @@ export default function CategoriesPage() {
           <p className="empty-hint">暂无{title}分类</p>
         ) : (
           <div className="category-tree">
-            {tree.map(parent => (
-              <React.Fragment key={parent.id}>
-                {renderCategoryRow(parent, false)}
-                {parent.children.map(child => renderCategoryRow(child, true))}
-              </React.Fragment>
-            ))}
+            {tree.map(parent => renderCategoryRow(parent))}
           </div>
         )}
       </div>

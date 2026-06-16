@@ -20,7 +20,17 @@
     <script type="module" src="/src/main.jsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
+        navigator.serviceWorker.register('/sw.js').then(function(reg) {
+          reg.addEventListener('updatefound', function() {
+            var newWorker = reg.installing;
+            newWorker.addEventListener('statechange', function() {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                window.__swUpdateReady = true;
+                if (typeof window.__onSwUpdate === 'function') window.__onSwUpdate();
+              }
+            });
+          });
+        });
       }
     </script>
   </body>

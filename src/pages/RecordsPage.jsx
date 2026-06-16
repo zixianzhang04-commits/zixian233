@@ -83,28 +83,16 @@ export default function RecordsPage() {
                 : '选择日期'}
             </button>
             {showDatePicker && (
-              <div className="modal-overlay" onClick={() => setShowDatePicker(false)}>
-                <div className="modal confirm-modal" onClick={e => e.stopPropagation()}>
-                  <div className="modal-header">
-                    <h3>选择日期范围</h3>
-                    <button className="modal-close" onClick={() => setShowDatePicker(false)}>✕</button>
-                  </div>
-                  <div className="modal-body">
-                    <div className="form-group">
-                      <label className="form-label">开始日期</label>
-                      <input type="date" className="form-input" value={filters.startDate}
-                        onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">结束日期</label>
-                      <input type="date" className="form-input" value={filters.endDate}
-                        onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
-                    </div>
-                  </div>
-                  <div className="modal-footer">
-                    <button className="btn btn-secondary btn-sm" onClick={() => { setFilters({ ...filters, startDate: '', endDate: '' }); setShowDatePicker(false); }}>清除</button>
-                    <button className="btn btn-primary" onClick={() => setShowDatePicker(false)}>确定</button>
-                  </div>
+              <div className="date-popover">
+                <label className="form-label">开始日期</label>
+                <input type="date" className="form-input" value={filters.startDate}
+                  onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
+                <label className="form-label">结束日期</label>
+                <input type="date" className="form-input" value={filters.endDate}
+                  onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
+                <div className="date-popover-actions">
+                  <button className="btn btn-sm" onClick={() => { setFilters({ ...filters, startDate: '', endDate: '' }); setShowDatePicker(false); }}>清除</button>
+                  <button className="btn btn-primary btn-sm" onClick={() => setShowDatePicker(false)}>确定</button>
                 </div>
               </div>
             )}

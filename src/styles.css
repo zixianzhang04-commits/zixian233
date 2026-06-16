@@ -279,8 +279,18 @@ body {
 .filter-search { width: 130px; font-size: var(--text-xs); }
 .filter-select, .filter-date { font-size: var(--text-xs); }
 
-/* Date filter wrap */
+/* Date filter popover */
 .date-filter-wrap { position: relative; }
+.date-popover {
+  position: absolute; top: calc(100% + 6px); right: 0; z-index: 200;
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius); box-shadow: var(--shadow-md);
+  padding: var(--space-2); width: 240px;
+  display: flex; flex-direction: column; gap: var(--space-1);
+}
+.date-popover .form-label { margin-bottom: 0; font-size: var(--text-xs); }
+.date-popover .form-input { padding: 8px 10px; }
+.date-popover-actions { display: flex; justify-content: flex-end; gap: var(--space-1); margin-top: 4px; }
 
 /* ==================== Toggle ==================== */
 .toggle-group {

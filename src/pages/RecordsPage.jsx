@@ -65,20 +65,22 @@ export default function RecordsPage() {
       <div className="toolbar">
         <div className="toolbar-left">
           <button className="btn btn-primary" onClick={() => { setEditingRecord(null); setShowForm(true); }}>添一笔</button>
-          <input type="text" className="form-input filter-search" placeholder="搜索备注…"
-            value={filters.keyword} onChange={e => setFilters({ ...filters, keyword: e.target.value })} />
-          <ImportExport records={records} categories={categories} onDataChanged={loadData} />
-        </div>
-        <div className="toolbar-right">
           <select className="form-input filter-select" value={filters.type}
             onChange={e => setFilters({ ...filters, type: e.target.value })}>
             <option value="">全部</option>
             <option value="expense">支出</option>
             <option value="income">收入</option>
           </select>
+          <ImportExport records={records} categories={categories} onDataChanged={loadData} />
+        </div>
+        <div className="toolbar-right">
+          <input type="text" className="form-input filter-search" placeholder="搜索备注…"
+            value={filters.keyword} onChange={e => setFilters({ ...filters, keyword: e.target.value })} />
           <div className="date-filter-wrap">
             <button className="btn btn-secondary btn-sm" onClick={() => setShowDatePicker(!showDatePicker)}>
-              📅 {filters.startDate || filters.endDate ? `${filters.startDate || '…'}~${filters.endDate || '…'}` : '选择日期'}
+              📅 {filters.startDate || filters.endDate
+                ? `${(filters.startDate || '…').replace(/-/g,'/')} ~ ${(filters.endDate || '…').replace(/-/g,'/')}`
+                : '选择日期'}
             </button>
             {showDatePicker && (
               <div className="date-dropdown">

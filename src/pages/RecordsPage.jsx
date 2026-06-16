@@ -12,6 +12,7 @@ export default function RecordsPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
   const [filters, setFilters] = useState({ type: '', keyword: '', startDate: '', endDate: '' });
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const loadData = useCallback(async () => {
@@ -64,6 +65,8 @@ export default function RecordsPage() {
       <div className="toolbar">
         <div className="toolbar-left">
           <button className="btn btn-primary" onClick={() => { setEditingRecord(null); setShowForm(true); }}>添一笔</button>
+          <input type="text" className="form-input filter-search" placeholder="搜索备注…"
+            value={filters.keyword} onChange={e => setFilters({ ...filters, keyword: e.target.value })} />
           <ImportExport records={records} categories={categories} onDataChanged={loadData} />
         </div>
         <div className="toolbar-right">
@@ -73,12 +76,20 @@ export default function RecordsPage() {
             <option value="expense">支出</option>
             <option value="income">收入</option>
           </select>
-          <input type="date" className="form-input filter-date" value={filters.startDate}
-            onChange={e => setFilters({ ...filters, startDate: e.target.value })} title="开始日期" />
-          <input type="date" className="form-input filter-date" value={filters.endDate}
-            onChange={e => setFilters({ ...filters, endDate: e.target.value })} title="结束日期" />
-          <input type="text" className="form-input filter-input" placeholder="搜索备注..."
-            value={filters.keyword} onChange={e => setFilters({ ...filters, keyword: e.target.value })} />
+          <div className="date-filter-wrap">
+            <button className="btn btn-secondary btn-sm" onClick={() => setShowDatePicker(!showDatePicker)}>
+              📅 {filters.startDate || filters.endDate ? `${filters.startDate || '…'}~${filters.endDate || '…'}` : '选择日期'}
+            </button>
+            {showDatePicker && (
+              <div className="date-dropdown">
+                <input type="date" className="form-input" value={filters.startDate}
+                  onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
+                <span className="date-sep">至</span>
+                <input type="date" className="form-input" value={filters.endDate}
+                  onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

@@ -279,6 +279,19 @@ body {
 .filter-search { width: 130px; font-size: var(--text-xs); }
 .filter-select, .filter-date { font-size: var(--text-xs); }
 
+/* Date filter dropdown */
+.date-filter-wrap { position: relative; }
+.date-dropdown {
+  position: absolute; top: 100%; right: 0; margin-top: 6px;
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-md);
+  padding: var(--space-2); z-index: 50;
+  display: flex; align-items: center; gap: var(--space-1);
+  white-space: nowrap;
+}
+.date-dropdown .form-input { width: auto; min-width: 130px; }
+.date-sep { font-size: var(--text-xs); color: var(--color-text-secondary); padding: 0 2px; }
+
 /* ==================== Toggle ==================== */
 .toggle-group {
   display: flex; background: var(--gray-100); border-radius: var(--radius-sm);

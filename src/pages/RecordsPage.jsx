@@ -83,16 +83,19 @@ export default function RecordsPage() {
                 : '选择日期'}
             </button>
             {showDatePicker && (
-              <div className="date-popover">
-                <label className="form-label">开始日期</label>
-                <input type="date" className="form-input" value={filters.startDate}
-                  onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
-                <label className="form-label">结束日期</label>
-                <input type="date" className="form-input" value={filters.endDate}
-                  onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
-                <div className="date-popover-actions">
-                  <button className="btn btn-sm" onClick={() => { setFilters({ ...filters, startDate: '', endDate: '' }); setShowDatePicker(false); }}>清除</button>
-                  <button className="btn btn-primary btn-sm" onClick={() => setShowDatePicker(false)}>确定</button>
+              <div className="date-overlay" onClick={() => setShowDatePicker(false)}>
+                <div className="date-panel" onClick={e => e.stopPropagation()}>
+                  <h4>选择日期</h4>
+                  <label className="form-label">开始日期</label>
+                  <input type="date" className="form-input" value={filters.startDate}
+                    onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
+                  <label className="form-label">结束日期</label>
+                  <input type="date" className="form-input" value={filters.endDate}
+                    onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
+                  <div className="date-panel-actions">
+                    <button className="btn btn-sm" onClick={() => { setFilters({ ...filters, startDate: '', endDate: '' }); setShowDatePicker(false); }}>清除</button>
+                    <button className="btn btn-primary btn-sm" onClick={() => setShowDatePicker(false)}>确定</button>
+                  </div>
                 </div>
               </div>
             )}

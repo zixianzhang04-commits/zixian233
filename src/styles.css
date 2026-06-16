@@ -279,18 +279,23 @@ body {
 .filter-search { width: 130px; font-size: var(--text-xs); }
 .filter-select, .filter-date { font-size: var(--text-xs); }
 
-/* Date filter popover */
+/* Date filter overlay */
 .date-filter-wrap { position: relative; }
-.date-popover {
-  position: absolute; top: calc(100% + 6px); right: 0; z-index: 200;
-  background: var(--color-surface); border: 1px solid var(--color-border);
-  border-radius: var(--radius); box-shadow: var(--shadow-md);
-  padding: var(--space-2); width: 240px;
-  display: flex; flex-direction: column; gap: var(--space-1);
+.date-overlay {
+  position: fixed; inset: 0; z-index: 1100;
+  background: var(--color-surface);
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn .15s ease;
 }
-.date-popover .form-label { margin-bottom: 0; font-size: var(--text-xs); }
-.date-popover .form-input { padding: 8px 10px; }
-.date-popover-actions { display: flex; justify-content: flex-end; gap: var(--space-1); margin-top: 4px; }
+.date-panel {
+  background: var(--color-surface); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); padding: var(--space-3); width: 300px;
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.date-panel h4 { font-size: var(--text-lg); font-weight: 700; text-align: center; }
+.date-panel .form-label { margin-bottom: 0; font-size: var(--text-sm); }
+.date-panel .form-input { padding: 10px 12px; }
+.date-panel-actions { display: flex; justify-content: flex-end; gap: var(--space-1); margin-top: var(--space-1); }
 
 /* ==================== Toggle ==================== */
 .toggle-group {

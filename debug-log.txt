@@ -1,0 +1,7 @@
+process.versions.electron: 33.4.11
+process.type: undefined
+app type: undefined
+app.whenReady type: undefined
+BrowserWindow type: undefined
+ipcMain type: undefined
+FAIL: app not available

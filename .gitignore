@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.vscode/
+.DS_Store
+*.log
+electron-dist/
+_electron_pkg/
+*.db
+*.db-wal
+*.db-shm

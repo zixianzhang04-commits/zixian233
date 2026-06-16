@@ -283,27 +283,24 @@ body {
 .date-filter-wrap { position: relative; }
 .date-overlay {
   position: fixed; inset: 0; z-index: 1100;
-  background: var(--color-surface);
+  background: rgba(0,0,0,.35);
   display: flex; align-items: center; justify-content: center;
   animation: fadeIn .15s ease;
 }
 .date-panel {
-  background: var(--color-surface); border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg); padding: var(--space-3); width: 300px;
-  display: flex; flex-direction: column; gap: var(--space-2);
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+  padding: var(--space-3); width: 320px;
 }
-.date-panel { position: relative; }
-.date-panel h4 { font-size: var(--text-lg); font-weight: 700; text-align: center; }
-.date-close {
-  position: absolute; top: var(--space-1); right: var(--space-1);
-  width: 28px; height: 28px; border-radius: 6px; border: none;
-  background: var(--color-bg); font-size: 14px; color: var(--color-text-secondary);
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
+.date-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: var(--space-2);
 }
-.date-close:hover { background: var(--gray-200); color: var(--color-text-primary); }
-.date-panel .form-label { margin-bottom: 0; font-size: var(--text-sm); }
-.date-panel .form-input { padding: 10px 12px; }
-.date-panel-actions { display: flex; justify-content: flex-end; gap: var(--space-1); margin-top: var(--space-1); }
+.date-panel-header h4 { font-size: var(--text-base); font-weight: 700; }
+.date-panel-body { display: flex; flex-direction: column; gap: var(--space-2); }
+.date-panel-body .form-label { margin-bottom: 0; font-size: var(--text-sm); }
+.date-panel-body .form-input { padding: 10px 12px; }
+.date-panel-actions { display: flex; justify-content: flex-end; gap: var(--space-1); margin-top: var(--space-2); }
 
 /* ==================== Toggle ==================== */
 .toggle-group {

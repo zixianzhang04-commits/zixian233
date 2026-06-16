@@ -85,14 +85,18 @@ export default function RecordsPage() {
             {showDatePicker && (
               <div className="date-overlay" onClick={() => setShowDatePicker(false)}>
                 <div className="date-panel" onClick={e => e.stopPropagation()}>
-                  <button className="date-close" onClick={() => setShowDatePicker(false)}>✕</button>
-                  <h4>选择日期</h4>
-                  <label className="form-label">开始日期</label>
-                  <input type="date" className="form-input" value={filters.startDate}
-                    onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
-                  <label className="form-label">结束日期</label>
-                  <input type="date" className="form-input" value={filters.endDate}
-                    onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
+                  <div className="date-panel-header">
+                    <h4>选择日期</h4>
+                    <button className="modal-close" onClick={() => setShowDatePicker(false)}>✕</button>
+                  </div>
+                  <div className="date-panel-body">
+                    <label className="form-label">开始日期</label>
+                    <input type="date" className="form-input" value={filters.startDate}
+                      onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
+                    <label className="form-label">结束日期</label>
+                    <input type="date" className="form-input" value={filters.endDate}
+                      onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
+                  </div>
                   <div className="date-panel-actions">
                     <button className="btn btn-sm" onClick={() => { setFilters({ ...filters, startDate: '', endDate: '' }); setShowDatePicker(false); }}>清除</button>
                     <button className="btn btn-primary btn-sm" onClick={() => setShowDatePicker(false)}>确定</button>

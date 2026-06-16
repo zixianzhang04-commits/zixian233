@@ -40,7 +40,7 @@ function loadFromStorage() {
 export async function createBrowserDb() {
   const initSqlJs = (await import('sql.js')).default;
   SQL = await initSqlJs({
-    locateFile: () => '/sql-wasm.wasm',
+    locateFile: () => './sql-wasm.wasm',
   });
 
   const saved = loadFromStorage();

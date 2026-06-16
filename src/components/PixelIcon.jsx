@@ -7,7 +7,7 @@ export default function PixelIcon({ name, size = 20, variant }) {
   if (!name) return null;
   const file = variant ? `${name}-${variant}.png` : `${name}.png`;
   return (
-    <img src={`/icons/${file}`} alt={name}
+    <img src={`./icons/${file}`} alt={name}
       style={{ width: size, height: size, verticalAlign: 'middle' }} />
   );
 }

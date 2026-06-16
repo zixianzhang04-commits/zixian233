@@ -670,8 +670,105 @@ body {
   transition: opacity 0s;
 }
 
-/* ==================== Enhanced Row Hover ==================== */
-.table tbody tr {
-  transition: background var(--duration-fast) var(--ease-standard),
-              transform var(--duration-fast) var(--ease-standard);
+/* ==================== Mobile: Bottom Tab Bar ==================== */
+.bottom-tab-bar {
+  display: none;
+}
+.layout-content {
+  padding-bottom: var(--space-3);
+}
+
+/* ==================== Mobile Responsive (< 768px) ==================== */
+@media (max-width: 768px) {
+  /* Hide sidebar on mobile */
+  .sidebar { display: none; }
+
+  /* Show bottom tab bar */
+  .bottom-tab-bar {
+    display: flex;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding: 6px 0 env(safe-area-inset-bottom, 8px);
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -1px 6px rgba(0,0,0,.04);
+  }
+
+  .tab-item {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    border: none; background: transparent; cursor: pointer;
+    padding: 4px 12px; min-height: 48px; min-width: 48px;
+    color: var(--color-text-secondary); font-family: var(--font-sans);
+    transition: color var(--duration-fast) var(--ease-standard);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab-item.active { color: var(--color-primary); }
+  .tab-icon  { font-size: 22px; line-height: 1; }
+  .tab-label { font-size: 10px; font-weight: 600; }
+
+  /* Layout adjustments */
+  .layout-content {
+    padding: var(--space-2);
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 8px));
+  }
+  .layout-main { padding-top: 0; }
+
+  /* TopBar simplified */
+  .topbar { padding: 0 var(--space-2); height: 48px; min-height: 48px; }
+  .topbar-title { font-size: var(--text-base); }
+
+  /* Toolbar wraps */
+  .toolbar { flex-direction: column; gap: var(--space-2); }
+  .toolbar-left, .toolbar-right { width: 100%; flex-wrap: wrap; }
+  .toolbar-right { justify-content: flex-start; }
+  .filter-select, .filter-input, .filter-date { flex: 1; min-width: 80px; }
+
+  /* Buttons compact */
+  .btn { padding: 10px 16px; font-size: var(--text-sm); }
+  .btn-sm { padding: 6px 12px; }
+
+  /* Stats cards stack */
+  .stats-cards { grid-template-columns: 1fr; gap: var(--space-2); }
+  .charts-grid { grid-template-columns: 1fr; gap: var(--space-2); }
+
+  /* Budget numbers stack */
+  .budget-numbers { grid-template-columns: 1fr; gap: var(--space-2); }
+
+  /* Table -> card-like */
+  .record-list { border-radius: var(--radius); }
+  .table thead { display: none; }
+  .table tbody tr {
+    display: flex; flex-wrap: wrap;
+    padding: var(--space-2); border-bottom: 1px solid var(--color-border);
+    gap: 4px 8px;
+  }
+  .table td {
+    display: block; padding: 2px 0; border: none; font-size: var(--text-sm);
+  }
+  .col-date { width: 100%; color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .col-type { width: auto; }
+  .col-category { width: auto; flex: 1; }
+  .col-amount { width: 100%; text-align: left; font-size: var(--text-lg); font-weight: 700; }
+  .col-note { width: 100%; order: 10; }
+  .col-actions { width: auto; margin-left: auto; }
+
+  /* Modal full-width */
+  .modal { width: 94vw; max-width: none; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .modal-overlay { align-items: flex-end; }
+  .modal-wide { width: 94vw; }
+
+  /* Category rows */
+  .category-child { margin-left: 24px; }
+  .category-card-actions { opacity: 1; }
+
+  /* Inputs bigger */
+  .form-input { font-size: 16px; padding: 12px 14px; }
+  .form-input:focus { padding: 11px 13px; }
+
+  /* Page narrower */
+  .page { padding: 0; }
+
+  /* Dropdown */
+  .dropdown-menu { left: auto; right: 0; }
 }

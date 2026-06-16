@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
+import BottomTabBar from './BottomTabBar';
 
 const pageTitles = {
   records: '记账管理',
@@ -20,6 +21,7 @@ export default function Layout({ activeNav, onNavChange, children }) {
         <main className="layout-content">
           {children}
         </main>
+        <BottomTabBar activeNav={activeNav} onNavChange={onNavChange} />
       </div>
     </div>
   );

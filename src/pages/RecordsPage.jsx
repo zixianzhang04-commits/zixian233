@@ -13,8 +13,6 @@ export default function RecordsPage() {
   const [editingRecord, setEditingRecord] = useState(null);
   const [filters, setFilters] = useState({ type: '', keyword: '', startDate: '', endDate: '' });
   const [deleteTarget, setDeleteTarget] = useState(null);
-  const [undoState, setUndoState] = useState({ canUndo: false, canRedo: false });
-  const [toast, setToast] = useState(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -34,8 +32,6 @@ export default function RecordsPage() {
 
   useEffect(() => { loadData(); }, [loadData]);
 
-  function showToast(msg) { setToast(msg); setTimeout(() => setToast(null), 2000); }
-
   async function handleSave(formData) {
     try {
       if (editingRecord) {
@@ -46,8 +42,6 @@ export default function RecordsPage() {
       setShowForm(false);
       setEditingRecord(null);
       loadData();
-      setUndoState(api.getUndoState());
-      showToast(editingRecord ? '记录已更新' : '记录已添加');
     } catch (err) { console.error('保存记录失败:', err); }
   }
 
@@ -61,41 +55,7 @@ export default function RecordsPage() {
       await api.records.delete(deleteTarget.id);
       setDeleteTarget(null);
       loadData();
-      setUndoState(api.getUndoState());
-      showToast('记录已删除');
     } catch (err) { console.error('删除记录失败:', err); }
-  }
-
-  async function handleCopyLast() {
-    try {
-      const result = await api.records.copyLast();
-      if (result) {
-        loadData();
-        showToast('已复制上一条记录');
-      } else {
-        showToast('没有可复制的记录');
-      }
-    } catch (err) { console.error('复制记录失败:', err); }
-  }
-
-  async function handleUndo() {
-    const result = await api.undo();
-    if (result) {
-      loadData();
-      setUndoState({ canUndo: result.canUndo, canRedo: result.canRedo });
-      const labels = { create: '新增', update: '编辑', delete: '删除' };
-      showToast(`已撤销${labels[result.actionType] || ''}操作`);
-    }
-  }
-
-  async function handleRedo() {
-    const result = await api.redo();
-    if (result) {
-      loadData();
-      setUndoState({ canUndo: result.canUndo, canRedo: result.canRedo });
-      const labels = { create: '新增', update: '编辑', delete: '删除' };
-      showToast(`已重做${labels[result.actionType] || ''}操作`);
-    }
   }
 
   return (
@@ -103,16 +63,13 @@ export default function RecordsPage() {
       {/* 工具栏 */}
       <div className="toolbar">
         <div className="toolbar-left">
-          <button className="btn btn-primary" onClick={() => { setEditingRecord(null); setShowForm(true); }}>＋ 新增记录</button>
-          <button className="btn btn-secondary" onClick={handleCopyLast}>📋 快速复制上一条</button>
-          <button className="btn btn-secondary" onClick={handleUndo} disabled={!undoState.canUndo} title="撤销 (Ctrl+Z)">↩️ 撤销</button>
-          <button className="btn btn-secondary" onClick={handleRedo} disabled={!undoState.canRedo} title="重做 (Ctrl+Y)">↪️ 重做</button>
+          <button className="btn btn-primary" onClick={() => { setEditingRecord(null); setShowForm(true); }}>添一笔</button>
           <ImportExport records={records} categories={categories} onDataChanged={loadData} />
         </div>
         <div className="toolbar-right">
           <select className="form-input filter-select" value={filters.type}
             onChange={e => setFilters({ ...filters, type: e.target.value })}>
-            <option value="">全部类型</option>
+            <option value="">全部</option>
             <option value="expense">支出</option>
             <option value="income">收入</option>
           </select>
@@ -156,7 +113,7 @@ export default function RecordsPage() {
                 <span> — {deleteTarget.categoryName}</span>
                 <span className="confirm-date">({deleteTarget.date})</span>
               </div>
-              <p className="confirm-warning">此操作可撤销。</p>
+              <p className="confirm-warning">此操作不可撤销。</p>
             </div>
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={() => setDeleteTarget(null)}>取消</button>
@@ -166,8 +123,6 @@ export default function RecordsPage() {
         </div>
       )}
 
-      {/* Toast 通知 */}
-      {toast && <div className="toast">{toast}</div>}
     </div>
   );
 }

@@ -276,6 +276,8 @@ body {
 .filter-select { width: 110px; }
 .filter-input  { width: 180px; }
 .filter-date   { width: 140px; }
+.filter-search { width: 130px; font-size: var(--text-xs); }
+.filter-select, .filter-date { font-size: var(--text-xs); }
 
 /* ==================== Toggle ==================== */
 .toggle-group {

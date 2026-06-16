@@ -1,8 +1,8 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+﻿const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const Database = require('better-sqlite3');
-const { initDatabase, closeDatabase } = require('./src/database/init');
-const queries = require('./src/database/queries');
+const { initDatabase, closeDatabase } = require('./src/database/init.cjs');
+const queries = require('./src/database/queries.cjs');
 
 const isDev = process.env.npm_lifecycle_event === 'dev';
 let mainWindow = null;
@@ -12,7 +12,7 @@ function createWindow() {
     width: 1200, height: 800, minWidth: 900, minHeight: 600,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
     },

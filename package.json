@@ -1,8 +1,9 @@
 {
     "name": "claude-ledger",
     "version": "0.1.0",
-    "description": "Electron + React 璁拌处杞欢楠ㄦ灦",
-    "main": "main.js",
+    "description": "Ledger App",
+    "type": "module",
+    "main": "main.cjs",
     "scripts": {
         "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron-dist/electron.exe .\"",
         "start": "electron-dist/electron.exe .",

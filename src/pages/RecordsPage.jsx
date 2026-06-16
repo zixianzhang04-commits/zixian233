@@ -83,12 +83,29 @@ export default function RecordsPage() {
                 : '选择日期'}
             </button>
             {showDatePicker && (
-              <div className="date-dropdown">
-                <input type="date" className="form-input" value={filters.startDate}
-                  onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
-                <span className="date-sep">至</span>
-                <input type="date" className="form-input" value={filters.endDate}
-                  onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
+              <div className="modal-overlay" onClick={() => setShowDatePicker(false)}>
+                <div className="modal confirm-modal" onClick={e => e.stopPropagation()}>
+                  <div className="modal-header">
+                    <h3>选择日期范围</h3>
+                    <button className="modal-close" onClick={() => setShowDatePicker(false)}>✕</button>
+                  </div>
+                  <div className="modal-body">
+                    <div className="form-group">
+                      <label className="form-label">开始日期</label>
+                      <input type="date" className="form-input" value={filters.startDate}
+                        onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">结束日期</label>
+                      <input type="date" className="form-input" value={filters.endDate}
+                        onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    <button className="btn btn-secondary btn-sm" onClick={() => { setFilters({ ...filters, startDate: '', endDate: '' }); setShowDatePicker(false); }}>清除</button>
+                    <button className="btn btn-primary" onClick={() => setShowDatePicker(false)}>确定</button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

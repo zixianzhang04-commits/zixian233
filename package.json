@@ -1,38 +1,41 @@
 {
-    "name": "claude-ledger",
-    "version": "0.1.0",
-    "description": "Ledger App",
-    "type": "module",
-    "main": "main.cjs",
-    "scripts": {
-        "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron-dist/electron.exe .\"",
-        "start": "electron-dist/electron.exe .",
-        "build": "vite build",
-        "package": "electron-builder"
-    },
-    "keywords": [
-        "electron",
-        "react",
-        "璁拌处"
-    ],
-    "author": "",
-    "license": "MIT",
-    "dependencies": {
-        "better-sqlite3": "^12.10.0",
-        "electron": "^42.4.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "recharts": "^3.8.1",
-        "sql.js": "^1.14.1",
-        "uuid": "^14.0.0",
-        "xlsx": "^0.18.5"
-    },
-    "devDependencies": {
-        "@cloudflare/vite-plugin": "^1.40.2",
-        "@vitejs/plugin-react": "^4.7.0",
-        "concurrently": "^8.0.0",
-        "electron-builder": "^24.0.0",
-        "vite": "^6.4.3",
-        "wait-on": "^7.0.0"
-    }
+  "name": "claude-ledger",
+  "version": "0.1.0",
+  "description": "Ledger App",
+  "type": "module",
+  "main": "main.cjs",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron-dist/electron.exe .\"",
+    "start": "electron-dist/electron.exe .",
+    "build": "vite build",
+    "package": "electron-builder",
+    "deploy": "npm run build && wrangler deploy",
+    "preview": "npm run build && wrangler dev"
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "璁拌处"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "electron": "^42.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^3.8.1",
+    "sql.js": "^1.14.1",
+    "uuid": "^14.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.40.2",
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^8.0.0",
+    "electron-builder": "^24.0.0",
+    "vite": "^6.4.3",
+    "wait-on": "^7.0.0",
+    "wrangler": "^4.100.0"
+  }
 }

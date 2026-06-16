@@ -85,6 +85,7 @@ export default function RecordsPage() {
             {showDatePicker && (
               <div className="date-overlay" onClick={() => setShowDatePicker(false)}>
                 <div className="date-panel" onClick={e => e.stopPropagation()}>
+                  <button className="date-close" onClick={() => setShowDatePicker(false)}>✕</button>
                   <h4>选择日期</h4>
                   <label className="form-label">开始日期</label>
                   <input type="date" className="form-input" value={filters.startDate}

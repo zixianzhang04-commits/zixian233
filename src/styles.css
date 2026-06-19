@@ -822,23 +822,30 @@ body {
 }
 
 /* ==================== Page Entrance Stagger ==================== */
-@keyframes enterUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* roll-in-bottom — Animista */
+@-webkit-keyframes roll-in-bottom {
+  0%   { -webkit-transform: translateY(800px) rotate(540deg); transform: translateY(800px) rotate(540deg); opacity: 0; }
+  100% { -webkit-transform: translateY(0) rotate(0deg); transform: translateY(0) rotate(0deg); opacity: 1; }
 }
+@keyframes roll-in-bottom {
+  0%   { -webkit-transform: translateY(800px) rotate(540deg); transform: translateY(800px) rotate(540deg); opacity: 0; }
+  100% { -webkit-transform: translateY(0) rotate(0deg); transform: translateY(0) rotate(0deg); opacity: 1; }
+}
+
 .stats-cards > *,
 .charts-grid  > *,
 .category-group,
 .budget-overview,
 .record-list,
 .toolbar {
-  animation: enterUp var(--duration-slow) var(--ease-decelerate) both;
+  -webkit-animation: roll-in-bottom 0.6s ease-out both;
+          animation: roll-in-bottom 0.6s ease-out both;
 }
 .stats-cards > *:nth-child(1) { animation-delay: 0ms; }
-.stats-cards > *:nth-child(2) { animation-delay: 50ms; }
-.stats-cards > *:nth-child(3) { animation-delay: 100ms; }
-.charts-grid  > *:nth-child(2) { animation-delay: 50ms; }
-.category-group:nth-child(2)  { animation-delay: 50ms; }
+.stats-cards > *:nth-child(2) { animation-delay: 80ms; }
+.stats-cards > *:nth-child(3) { animation-delay: 160ms; }
+.charts-grid  > *:nth-child(2) { animation-delay: 80ms; }
+.category-group:nth-child(2)  { animation-delay: 80ms; }
 
 /* ==================== Card Hover Lift ==================== */
 .stat-card,

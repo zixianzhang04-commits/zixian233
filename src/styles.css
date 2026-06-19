@@ -827,7 +827,21 @@ body {
   0%   { -webkit-transform: rotate(-540deg) scale(0); transform: rotate(-540deg) scale(0); opacity: 0; }
   100% { -webkit-transform: rotate(0) scale(1); transform: rotate(0) scale(1); opacity: 1; }
 }
-.loading-screen p { margin-top: var(--space-3); font-size: 18px; font-weight: 500; letter-spacing: 0.08em; opacity: 0.9; }
+.loading-screen p {
+  margin-top: var(--space-3); font-size: 18px; font-weight: 500; opacity: 0.9;
+  -webkit-animation: tracking-in-contract 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+          animation: tracking-in-contract 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+}
+@-webkit-keyframes tracking-in-contract {
+  0%   { letter-spacing: 1em; opacity: 0; }
+  40%  { opacity: 0.6; }
+  100% { letter-spacing: 0.08em; opacity: 0.9; }
+}
+@keyframes tracking-in-contract {
+  0%   { letter-spacing: 1em; opacity: 0; }
+  40%  { opacity: 0.6; }
+  100% { letter-spacing: 0.08em; opacity: 0.9; }
+}
 @keyframes pulse { 0%,100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
 
 /* ==================== Scrollbar ==================== */

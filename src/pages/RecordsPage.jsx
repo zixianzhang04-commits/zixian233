@@ -111,27 +111,6 @@ export default function RecordsPage() {
                 ? `${fmtDate(filters.startDate) || '…'} ~ ${fmtDate(filters.endDate) || '…'}`
                 : '选择日期'}
             </button>
-            {showDatePicker && (
-              <div className="date-overlay" onClick={() => setShowDatePicker(false)}>
-                <div className="date-panel" onClick={e => e.stopPropagation()}>
-                  <div className="date-panel-header">
-                    <h4>选择日期</h4>
-                  </div>
-                  <div className="date-panel-body">
-                    <label className="form-label">开始日期</label>
-                    <input type="date" className="form-input" value={filters.startDate}
-                      onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
-                    <label className="form-label">结束日期</label>
-                    <input type="date" className="form-input" value={filters.endDate}
-                      onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
-                  </div>
-                  <div className="date-panel-actions">
-                    <button className="btn btn-sm" disabled={!hasBothDates} onClick={() => { setFilters({ ...filters, startDate: '', endDate: '' }); setShowDatePicker(false); }}>清除</button>
-                    <button className="btn btn-primary btn-sm" disabled={!hasBothDates} onClick={() => setShowDatePicker(false)}>确定</button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -172,6 +151,25 @@ export default function RecordsPage() {
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={() => setDeleteTarget(null)}>取消</button>
               <button className="btn btn-danger" onClick={handleDeleteConfirm}>确认删除</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 日期弹窗 */}
+      {showDatePicker && (
+        <div className="date-overlay" onClick={() => setShowDatePicker(false)}>
+          <div className="date-panel" onClick={e => e.stopPropagation()}>
+            <div className="date-panel-header"><h4>选择日期</h4></div>
+            <div className="date-panel-body">
+              <label className="form-label">开始日期</label>
+              <input type="date" className="form-input" value={filters.startDate} onChange={e => setFilters({ ...filters, startDate: e.target.value })} />
+              <label className="form-label">结束日期</label>
+              <input type="date" className="form-input" value={filters.endDate} onChange={e => setFilters({ ...filters, endDate: e.target.value })} />
+            </div>
+            <div className="date-panel-actions">
+              <button className="btn btn-sm" disabled={!hasBothDates} onClick={() => { setFilters({ ...filters, startDate: '', endDate: '' }); setShowDatePicker(false); }}>清除</button>
+              <button className="btn btn-primary btn-sm" disabled={!hasBothDates} onClick={() => setShowDatePicker(false)}>确定</button>
             </div>
           </div>
         </div>

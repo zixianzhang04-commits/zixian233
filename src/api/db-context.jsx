@@ -9,6 +9,7 @@ export function DbProvider({ children }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const minTime = new Promise(r => setTimeout(r, 3000));
     async function init() {
       try {
         console.log('[DbProvider] 开始初始化...');
@@ -26,6 +27,7 @@ export function DbProvider({ children }) {
         console.error('[DbProvider] 初始化失败:', err);
         setError(err.message || String(err));
       } finally {
+        await minTime;
         setReady(true);
       }
     }

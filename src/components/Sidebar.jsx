@@ -13,7 +13,7 @@ export default function Sidebar({ activeNav, onNavChange }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <span className="sidebar-logo"><PixelIcon name="misc-logo" size={24} /></span>
+        <span className="sidebar-logo"><img src="./icons/logo-8.png" alt="logo" style={{width:32,height:32,borderRadius:8}} /></span>
         <span className="sidebar-title">简单记账</span>
       </div>
       <nav className="sidebar-nav">

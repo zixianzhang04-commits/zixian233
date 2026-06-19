@@ -14,7 +14,7 @@ export default function Sidebar({ activeNav, onNavChange }) {
     <aside className="sidebar">
       <div className="sidebar-brand">
         <span className="sidebar-logo"><img src="./icons/logo-8.png" alt="logo" style={{width:32,height:32,borderRadius:8}} /></span>
-        <span className="sidebar-title">简单记账</span>
+        <span className="sidebar-title">小盷记账</span>
       </div>
       <nav className="sidebar-nav">
         {navItems.map((item) => (

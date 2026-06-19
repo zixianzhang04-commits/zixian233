@@ -224,9 +224,9 @@ export default function StatsPage() {
             <YAxis fontSize={11}/>
             <Tooltip formatter={v=>`¥${v}`}/>
             <Legend/>
-            <Line type="monotone" dataKey="income" name="收入" stroke="#22c55e" strokeWidth={2} dot={false}/>
-            <Line type="monotone" dataKey="expense" name="支出" stroke="#ef4444" strokeWidth={2} dot={false}/>
-            <Line type="monotone" dataKey="balance" name="结余" stroke="#4F46E5" strokeWidth={2} dot={false} strokeDasharray="5 5"/>
+            <Line type="monotone" dataKey="income" name="收入" stroke="#22c55e" strokeWidth={2} dot={{r:2}}/>
+            <Line type="monotone" dataKey="expense" name="支出" stroke="#ef4444" strokeWidth={2} dot={{r:2}}/>
+            <Line type="monotone" dataKey="balance" name="结余" stroke="#4F46E5" strokeWidth={2} strokeDasharray="5 5" dot={{r:2}}/>
           </LineChart>
         </ResponsiveContainer>
       </div>

@@ -58,7 +58,16 @@ export default function ProfilePage() {
             <div className="modal-header"><h3>编辑资料</h3><button className="modal-close" onClick={() => setShowForm(false)}>✕</button></div>
             <form onSubmit={handleSaveProfile}>
               <div className="modal-body">
-                <div className="form-group"><label className="form-label">头像 URL</label><input type="text" className="form-input" placeholder="图片链接" value={pf.avatar} onChange={e => setPf({...pf, avatar: e.target.value})} /></div>
+                <div className="form-group">
+                  <label className="form-label">头像</label>
+                  <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                    <div className="profile-avatar" style={{width:64,height:64}}>
+                      {pf.avatar ? <img src={pf.avatar} alt="" /> : <span className="profile-avatar-placeholder">{(pf.name||'我')[0]}</span>}
+                    </div>
+                    <label className="btn btn-sm" style={{cursor:'pointer'}}>从相册选择<input type="file" accept="image/*" hidden onChange={e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>setPf({...pf,avatar:ev.target.result});r.readAsDataURL(f);}}/></label>
+                  </div>
+                  <input type="text" className="form-input" placeholder="或输入图片链接" value={pf.avatar} onChange={e => setPf({...pf, avatar: e.target.value})} style={{marginTop:8}} />
+                </div>
                 <div className="form-group"><label className="form-label">昵称</label><input type="text" className="form-input" placeholder="你的名字" value={pf.name} onChange={e => setPf({...pf, name: e.target.value})} required /></div>
                 <div className="form-group"><label className="form-label">签名</label><input type="text" className="form-input" placeholder="写一句话…" value={pf.bio} onChange={e => setPf({...pf, bio: e.target.value})} /></div>
               </div>

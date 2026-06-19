@@ -36,7 +36,7 @@ export function DbProvider({ children }) {
     return (
       <div className="loading-screen">
         <div className="loading-spinner"><img src="./icons/logo-8.png" alt="" style={{width:80,height:80}} /></div>
-        <p>正在初始化数据库...</p>
+        <p>小盷记账</p>
       </div>
     );
   }

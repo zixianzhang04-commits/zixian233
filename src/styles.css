@@ -816,7 +816,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 .loading-spinner { font-size: 56px; animation: pulse 1.2s ease-in-out infinite; }
-.loading-screen p { margin-top: var(--space-2); font-size: var(--text-lg); font-weight: 600; }
+.loading-screen p { margin-top: var(--space-3); font-size: 18px; font-weight: 500; letter-spacing: 0.08em; opacity: 0.9; }
 @keyframes pulse { 0%,100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
 
 /* ==================== Scrollbar ==================== */
